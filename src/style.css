@@ -1,0 +1,249 @@
+:root{
+  --ink:#1c2430;
+  --ink-soft:#5b6472;
+  --paper:#f4f6f8;
+  --card:#ffffff;
+  --line:#e1e5ea;
+  --ok:#1f7a4d;
+  --ok-bg:#e7f5ec;
+  --alarm:#b8221f;
+  --alarm-bg:#fdeceb;
+  --accent:#2c5aa0;
+  --radius:14px;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  overscroll-behavior:none;
+}
+.screen{
+  position:fixed; inset:0;
+  display:flex; flex-direction:column;
+  background:var(--paper);
+  transform:translateX(100%);
+  transition:transform 0.32s cubic-bezier(.32,.72,0,1);
+  z-index:1;
+  visibility:hidden;
+}
+.screen.active{ transform:none; z-index:3; visibility:visible; }
+.screen.leaving-back{ transform:translateX(100%); z-index:2; visibility:visible; }
+.screen.leaving-forward{ transform:translateX(-100%); z-index:2; visibility:visible; }
+
+header.bar{
+  padding:calc(14px + env(safe-area-inset-top)) 16px 12px;
+  display:flex; align-items:center; gap:10px;
+  border-bottom:1px solid var(--line);
+  background:var(--card);
+}
+header.bar h1{ font-size:18px; margin:0; font-weight:650; letter-spacing:-0.2px; }
+header.bar .sub{ font-size:13px; color:var(--ink-soft); margin-top:2px; }
+.back{
+  width:34px; height:34px; border-radius:10px; border:none;
+  background:var(--paper); color:var(--accent); font-size:19px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.grow{flex:1; min-width:0;}
+.icon-btn{
+  width:34px; height:34px; border-radius:10px; border:none;
+  background:var(--accent); color:white; font-size:16px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.icon-btn.wide-btn{
+  width:auto; padding:0 13px; gap:6px; font-size:13px; font-weight:700; white-space:nowrap;
+}
+.icon-row{ display:flex; gap:6px; flex-shrink:0; }
+.section-label{ font-size:13px; font-weight:700; color:var(--ink-soft); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.3px; }
+.secondary-btn{
+  width:100%; padding:13px; border-radius:12px; border:1.5px solid var(--accent);
+  background:transparent; color:var(--accent); font-size:14px; font-weight:700;
+}
+
+.session-bar{
+  display:flex; gap:8px; padding:10px 16px; background:var(--card);
+  border-bottom:1px solid var(--line); align-items:center;
+}
+.session-field{ flex:1; min-width:0; }
+.session-field label{ font-size:11px; color:var(--ink-soft); display:block; margin-bottom:3px; }
+.session-field input{
+  width:100%; min-width:0; padding:9px 8px; border-radius:9px; border:1px solid var(--line);
+  font-size:14px; background:var(--paper); color:var(--ink); box-sizing:border-box;
+}
+.session-field.lesson{ flex:0 0 88px; }
+.session-field.lesson input{ text-align:center; }
+.session-field input:disabled{
+  background:#eceff2; color:var(--ink-soft); opacity:1;
+  -webkit-text-fill-color:var(--ink-soft);
+}
+
+main{ flex:1; overflow-y:auto; overflow-x:hidden; padding:14px 16px 14px; -webkit-overflow-scrolling:touch; display:flex; flex-direction:column; }
+main.no-footer{ padding-bottom:calc(24px + env(safe-area-inset-bottom)); }
+
+/* --- список класів --- */
+.class-row{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:16px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between;
+}
+.class-row .name{ font-size:16px; font-weight:600; }
+.class-row .meta{ font-size:13px; color:var(--ink-soft); margin-top:3px; }
+.class-row .chev{ color:#b7bec8; font-size:18px; }
+
+/* --- рядки дітей --- */
+.stu-row{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:14px 14px; margin-bottom:8px; display:flex; align-items:center; gap:12px;
+}
+.stu-row .nm{ flex:1; font-size:16px; font-weight:500; }
+.check{
+  width:28px; height:28px; border-radius:8px; border:2px solid #c7cdd5;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  font-size:16px; color:transparent; font-weight:700;
+}
+.stu-row.present .check{ background:var(--ok); border-color:var(--ok); color:white; }
+.stu-row.present{ background:var(--ok-bg); border-color:#c7e6d3; }
+
+.stu-row.shelter-mode .check{ border-color:var(--alarm); }
+.stu-row.shelter-mode.verified{ background:var(--alarm-bg); border-color:#f3bcb9; }
+.stu-row.shelter-mode.verified .check{ background:var(--alarm); border-color:var(--alarm); color:white; }
+
+.stu-row .del{ color:#c7cdd5; font-size:20px; padding:4px 6px; flex-shrink:0; }
+.row-actions{ display:flex; align-items:center; gap:10px; }
+.row-del{ color:#c7cdd5; font-size:19px; padding:6px; flex-shrink:0; }
+.pickup-btn{
+  font-size:12px; font-weight:600; color:var(--accent);
+  background:#e8eef7; border:none; border-radius:8px;
+  padding:7px 10px; flex-shrink:0; white-space:nowrap;
+}
+.pickup-badge{
+  font-size:11px; font-weight:700; color:var(--accent);
+  background:#e8eef7; border-radius:7px; padding:3px 7px;
+  margin-left:8px; flex-shrink:0; white-space:nowrap;
+}
+
+/* --- поява/видалення рядків (клас, урок, дитина) --- */
+.row-anim{ animation: row-in 0.22s ease both; }
+@keyframes row-in{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.row-removing{
+  animation:none;
+  transition: opacity .2s ease, transform .2s ease,
+              max-height .22s ease .04s, margin-bottom .22s ease .04s,
+              padding-top .22s ease .04s, padding-bottom .22s ease .04s,
+              border-width .22s ease .04s;
+  opacity:0 !important;
+  transform: translateX(28px) !important;
+  max-height:0 !important;
+  margin-bottom:0 !important;
+  padding-top:0 !important;
+  padding-bottom:0 !important;
+  border-width:0 !important;
+  pointer-events:none;
+}
+
+.empty{ text-align:center; color:var(--ink-soft); font-size:14px; padding:40px 20px; line-height:1.5; }
+
+/* --- нижня панель ---
+   Це звичайний елемент у flex-колонці екрана (не fixed і не sticky!).
+   .screen — flex-колонка на всю висоту екрана, main має flex:1 і сам займає
+   решту місця та прокручується, тож footer завжди опиняється рівно внизу
+   екрана — без position:fixed/sticky, які на iOS ненадійно поводяться разом
+   із transform-анімацією переходів між екранами. */
+/* --- нижня панель ---
+   Звичайний блок ОДРАЗУ ПІД списком, прокручується разом із ним (жодного
+   position:fixed / sticky) — щоб виключити будь-які проблеми з приклеюванням
+   до низу екрана на iOS. */
+footer.summary{
+  margin:16px -16px 0;
+  padding:16px 16px calc(16px + env(safe-area-inset-bottom));
+  background:var(--card); border-top:1px solid var(--line);
+  display:flex; align-items:center; gap:10px;
+}
+.count-pill{ font-size:13px; color:var(--ink-soft); flex:1; }
+.count-pill b{ color:var(--ink); }
+.alarm-toggle{
+  background:var(--alarm); color:white; border:none; border-radius:12px;
+  padding:13px 18px; font-size:15px; font-weight:700; letter-spacing:0.2px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; text-align:center; line-height:1.25;
+}
+/* --- екран тривоги --- */
+.alarm-banner{ background:var(--alarm); color:white; padding:calc(14px + env(safe-area-inset-top)) 18px 14px; text-align:center; }
+.alarm-banner.calm{ background:var(--accent); }
+.alarm-banner .t1{ font-size:15px; font-weight:700; letter-spacing:0.3px; }
+.alarm-banner .t2{ font-size:13px; opacity:0.9; margin-top:3px; }
+.screen.alarm-active main{ background:#fff8f7; }
+#screen-return-check main{ background:#f3f7fd; }
+.stand-down-btn{
+  width:100%; padding:14px; border-radius:12px; border:none;
+  font-size:15px; font-weight:700;
+  background:#dfe3e8; color:var(--ink-soft);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.stand-down-btn.all-clear{
+  background:var(--ok); color:white;
+}
+
+/* --- форми --- */
+textarea.field{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+  font-size:15px; background:var(--card); margin-bottom:10px; resize:vertical;
+  font-family:inherit; line-height:1.5; min-height:110px;
+}
+textarea.field:focus, .field:focus{ outline:2px solid var(--accent); border-color:transparent; }
+.primary-btn{
+  width:100%; padding:14px; border-radius:12px; border:none;
+  background:var(--accent); color:white; font-size:15px; font-weight:700;
+}
+.danger-btn{
+  width:100%; padding:14px; border-radius:12px;
+  border:1.5px solid var(--alarm); background:transparent;
+  color:var(--alarm); font-size:15px; font-weight:700;
+}
+.hint{ font-size:12px; color:var(--ink-soft); margin:-4px 0 14px; line-height:1.5; }
+
+/* --- уроки в хабі класу --- */
+.hist-row{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:14px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between;
+}
+.hist-row .d{ font-size:15px; font-weight:600; text-transform:capitalize; }
+.hist-row .l{ font-size:13px; color:var(--ink-soft); margin-top:2px; }
+.hist-row .c{ font-size:13px; color:var(--ok); font-weight:600; }
+
+/* --- форма нового уроку --- */
+.form-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px; }
+.form-field{ margin-bottom:16px; }
+.form-field label{ font-size:13px; color:var(--ink-soft); display:block; margin-bottom:6px; font-weight:600; }
+.form-field input{
+  width:100%; padding:12px 14px; border-radius:11px; border:1px solid var(--line);
+  font-size:16px; background:var(--paper); color:var(--ink);
+  box-sizing:border-box; min-width:0; display:block;
+}
+input[type="date"]{
+  -webkit-appearance:none; appearance:none;
+  width:100%; min-width:0; box-sizing:border-box;
+}
+
+/* --- модалка підтвердження --- */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(20,24,30,0.5);
+  display:none; align-items:flex-end; justify-content:center; z-index:100;
+}
+.modal-overlay.active{ display:flex; }
+.modal-card{
+  background:var(--card); width:100%; max-width:480px;
+  border-radius:18px 18px 0 0; padding:22px 20px calc(20px + env(safe-area-inset-bottom));
+}
+.modal-card .m-title{ font-size:16px; font-weight:700; margin-bottom:6px; }
+.modal-card .m-text{ font-size:14px; color:var(--ink-soft); line-height:1.5; margin-bottom:20px; }
+.modal-btn{
+  width:100%; padding:14px; border-radius:12px; border:none;
+  font-size:15px; font-weight:700; margin-bottom:10px;
+}
+.modal-btn.cancel{ background:var(--paper); color:var(--ink); }
+.modal-btn.danger{ background:var(--alarm); color:white; margin-bottom:0; }
